@@ -5,6 +5,11 @@ This is a sample app showing how to run a [3Scale](http://3Scale.com) API Proxy 
 
 [Learn about 3scale's API proxy on Nginx](https://support.3scale.net/howtos/api-configuration/nginx-proxy)
 
+One-click deploy
+----------------
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
+
 Usage
 ---------
 
