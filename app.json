@@ -9,7 +9,14 @@
   "repository": "https://github.com/vdel26/api-proxy-3scale-heroku",
   "env": {
     "BUILDPACK_URL": "http://github.com/leafo/heroku-buildpack-lua.git",
-    "THREESCALE_PROVIDER_KEY": "",
-    "THREESCALE_ADMIN_DOMAIN": ""
+    "THREESCALE_PROVIDER_KEY": {
+      "description": "Your 3scale provider key"
+    },
+    "THREESCALE_ADMIN_DOMAIN": {
+      "description": "Your 3scale admin portal domain (e.g. myname-admin.3scale.net)"
+    }
+  },
+  "scripts": {
+    "postdeploy": "bash build_nginx_config.sh"
   }
 }
