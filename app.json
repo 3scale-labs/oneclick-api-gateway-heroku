@@ -1,0 +1,13 @@
+{
+  "name": "3scale API proxy",
+  "keywords": [
+    "3scale",
+    "nginx",
+    "api"
+  ],
+  "website": "http://3scale.net",
+  "repository": "https://github.com/vdel26/api-proxy-3scale-heroku",
+  "env": {
+    "BUILDPACK_URL": "http://github.com/leafo/heroku-buildpack-lua.git",
+  }
+}
