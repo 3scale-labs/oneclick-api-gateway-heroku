@@ -42,14 +42,12 @@ def modify_config_for_heroku(nginx_conf_file):
 
 
 url = build_provider_url()
-print 'DEBUG: url %s' % (url)
-
 download_config_bundle(url)
-print 'DEBUG: downloaded'
+print '3SCALE: configuration bundle was successfully downloaded.'
 
 nginxconf = find_file('nginx_*.conf')
 nginxlua = find_file('nginx_*.lua')
 modify_config_for_heroku(nginxconf)
 os.rename(nginxconf, 'nginx.conf')
 os.rename(nginxlua, 'nginx_3scale_access.lua')
-print 'DEBUG: done!'
+print '3SCALE: configuration is ready to go.'
