@@ -6,7 +6,7 @@
     "api"
   ],
   "website": "http://3scale.net",
-  "repository": "https://github.com/vdel26/api-proxy-3scale-heroku",
+  "repository": "https://github.com/3scale/oneclick-api-gateway-heroku",
   "env": {
     "BUILDPACK_URL": "http://github.com/leafo/heroku-buildpack-lua.git",
     "THREESCALE_PROVIDER_KEY": {
