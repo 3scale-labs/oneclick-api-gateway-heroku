@@ -10,6 +10,7 @@
   "logo": "http://cl.ly/image/0A2h2V3L0E2x/3scale_350x350.png",
   "env": {
     "BUILDPACK_URL": "http://github.com/leafo/heroku-buildpack-lua.git",
+    "THREESCALE_DEPLOYMENT_ENV": "-heroku-1click",
     "THREESCALE_PROVIDER_KEY": {
       "description": "Your 3scale provider key"
     },
