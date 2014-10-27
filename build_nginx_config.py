@@ -1,12 +1,15 @@
 from fnmatch import fnmatch
 import urllib2
+import urllib
 import zipfile
 import os
 import sys
 import fileinput
 
 CONFIGBUNDLE = 'nginx-config.zip'
-ENDPOINT = '/admin/api/nginx.zip?provider_key='
+DOWNLOAD_ENDPOINT = '/admin/api/nginx.zip?provider_key='
+CALLBACK_ENDPOINT = '/admin/api/heroku-proxy/deployed'
+
 REPLACEMENTS = {
     '# daemon off;' : 'daemon off;',
     '# error_log stderr notice;' : 'error_log stderr;',
@@ -15,10 +18,13 @@ REPLACEMENTS = {
     'server_name' : '# server_name'
 }
 
+provider_key = os.environ['THREESCALE_PROVIDER_KEY']
+admin_domain = os.environ['THREESCALE_ADMIN_DOMAIN']
+
 def build_provider_url():
     provider_key = os.environ['THREESCALE_PROVIDER_KEY']
     admin_domain = os.environ['THREESCALE_ADMIN_DOMAIN']
-    url = 'https://%s%s%s' % (admin_domain, ENDPOINT, provider_key)
+    url = 'https://%s%s%s' % (admin_domain, DOWNLOAD_ENDPOINT, provider_key)
     return url
 
 def download_config_bundle(url):
@@ -40,6 +46,18 @@ def modify_config_for_heroku(nginx_conf_file):
                 line = line.replace(original, replacement)
         sys.stdout.write(line)
 
+def callback():
+    url = 'https://%s%s' % (admin_domain, CALLBACK_ENDPOINT)
+    data = urllib.urlencode({ 'provider_key': provider_key })
+    try:
+        req = urllib2.urlopen(url, data)
+    except urllib2.HTTPError as e:
+        print 'DEBUG: callback error. Code: %s' % e.code
+    else:
+        if req.getcode() == 200:
+            print 'DEBUG: task checked in go-to-live widget'
+
+
 
 url = build_provider_url()
 download_config_bundle(url)
@@ -51,3 +69,5 @@ modify_config_for_heroku(nginxconf)
 os.rename(nginxconf, 'nginx.conf')
 os.rename(nginxlua, 'nginx_3scale_access.lua')
 print '3SCALE: configuration is ready to go.'
+callback()
+
