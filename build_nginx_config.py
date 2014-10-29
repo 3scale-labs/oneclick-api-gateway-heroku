@@ -21,13 +21,9 @@ REPLACEMENTS = {
 provider_key = os.environ['THREESCALE_PROVIDER_KEY']
 admin_domain = os.environ['THREESCALE_ADMIN_DOMAIN']
 
-def build_provider_url():
-    provider_key = os.environ['THREESCALE_PROVIDER_KEY']
-    admin_domain = os.environ['THREESCALE_ADMIN_DOMAIN']
-    url = 'https://%s%s%s' % (admin_domain, DOWNLOAD_ENDPOINT, provider_key)
-    return url
 
-def download_config_bundle(url):
+def download_config_bundle():
+    url = 'https://%s%s%s' % (admin_domain, DOWNLOAD_ENDPOINT, provider_key)
     req = urllib2.urlopen(url)
     with open(CONFIGBUNDLE, 'w') as zip_bundle:
         zip_bundle.write(req.read())
@@ -52,15 +48,13 @@ def callback():
     try:
         req = urllib2.urlopen(url, data)
     except urllib2.HTTPError as e:
-        print 'DEBUG: callback error. Code: %s' % e.code
+        print '3SCALE: callback error. Code: %s' % e.code
     else:
         if req.getcode() == 200:
-            print 'DEBUG: task checked in go-to-live widget'
+            print '3SCALE: task marked as completed in admin dashboard'
 
 
-
-url = build_provider_url()
-download_config_bundle(url)
+download_config_bundle()
 print '3SCALE: configuration bundle was successfully downloaded.'
 
 nginxconf = find_file('nginx_*.conf')
