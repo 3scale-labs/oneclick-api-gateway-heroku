@@ -3,6 +3,7 @@ import urllib2
 import urllib
 import zipfile
 import os
+import re
 import sys
 import fileinput
 
@@ -14,7 +15,7 @@ REPLACEMENTS = {
     '# daemon off;' : 'daemon off;',
     '# error_log stderr notice;' : 'error_log stderr;',
     'listen 80;' : 'listen ${{PORT}} ;',
-    'access_by_lua_file lua_tmp.lua;' : 'access_by_lua_file nginx_3scale_access.lua;',
+    'nginx_\w+\.lua' : 'nginx_3scale_access.lua',
     'server_name' : '# server_name'
 }
 
@@ -38,8 +39,8 @@ def find_file(namepattern):
 def modify_config_for_heroku(nginx_conf_file):
     for line in fileinput.input(nginx_conf_file, inplace=True):
         for original, replacement in REPLACEMENTS.iteritems():
-            if original in line:
-                line = line.replace(original, replacement)
+            if re.search(original, line):
+                line = re.sub(original, replacement, line)
         sys.stdout.write(line)
 
 def callback():
