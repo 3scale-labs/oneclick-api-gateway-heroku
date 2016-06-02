@@ -15,7 +15,7 @@ REPLACEMENTS = {
     '# daemon off;' : 'daemon off;',
     '# error_log stderr notice;' : 'error_log stderr;',
     'listen 80;' : 'listen ${{PORT}} ;',
-    'nginx_\w+\.lua' : 'nginx_3scale_access.lua',
+    'nginx_\w+' : 'nginx_3scale_access',
     'server_name' : '# server_name'
 }
 
